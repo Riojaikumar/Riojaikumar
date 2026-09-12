@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" width="1000" height="300" role="img" aria-label="Request flow: edge to CDN to gateway to federated subgraphs to data layer">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1020"/><stop offset="100%" stop-color="#10152b"/>
+    </linearGradient>
+    <linearGradient id="wire" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#334155"/><stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+    <pattern id="grid2" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#7dd3fc" stroke-opacity=".05"/>
+    </pattern>
+    <clipPath id="f2"><rect width="1000" height="300" rx="18"/></clipPath>
+    <style>
+      .t{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace}
+      .lbl{font-size:12.5px;fill:#cbd5e1;letter-spacing:.4px}
+      .sub{font-size:9.5px;fill:#64748b;letter-spacing:.6px}
+      .cap{font-size:11px;fill:#475569;letter-spacing:2.5px}
+      .node{fill:#0f172a;stroke-width:1.4}
+    </style>
+  </defs>
+
+  <g clip-path="url(#f2)">
+    <rect width="1000" height="300" fill="url(#bg2)"/>
+    <rect width="1000" height="300" fill="url(#grid2)"/>
+
+    <text class="t cap" x="32" y="34">REQUEST&#160;PATH</text>
+
+    <!-- wires -->
+    <g stroke="url(#wire)" stroke-width="2" fill="none">
+      <path id="w1" d="M148 150 H250"/>
+      <path id="w2" d="M330 150 H432"/>
+      <path id="w3" d="M512 150 H604"/>
+      <path d="M700 150 H745 V78 H788"/>
+      <path d="M700 150 H788"/>
+      <path d="M700 150 H745 V222 H788"/>
+    </g>
+
+    <!-- travelling pulses -->
+    <g fill="#38bdf8">
+      <circle r="3.6"><animateMotion dur="3.2s" repeatCount="indefinite" path="M148 150 H250"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" repeatCount="indefinite"/></circle>
+      <circle r="3.6" fill="#a78bfa"><animateMotion dur="3.2s" begin="0.5s" repeatCount="indefinite" path="M330 150 H432"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" begin="0.5s" repeatCount="indefinite"/></circle>
+      <circle r="3.6" fill="#f472b6"><animateMotion dur="3.2s" begin="1s" repeatCount="indefinite" path="M512 150 H604"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" begin="1s" repeatCount="indefinite"/></circle>
+      <circle r="3.2" fill="#34d399"><animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite" path="M700 150 H745 V78 H788"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" begin="1.6s" repeatCount="indefinite"/></circle>
+      <circle r="3.2" fill="#34d399"><animateMotion dur="3.2s" begin="1.9s" repeatCount="indefinite" path="M700 150 H788"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" begin="1.9s" repeatCount="indefinite"/></circle>
+      <circle r="3.2" fill="#34d399"><animateMotion dur="3.2s" begin="2.2s" repeatCount="indefinite" path="M700 150 H745 V222 H788"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" begin="2.2s" repeatCount="indefinite"/></circle>
+    </g>
+
+    <!-- nodes -->
+    <g class="t">
+      <rect class="node" x="34" y="122" width="114" height="56" rx="10" stroke="#38bdf8" stroke-opacity=".55"/>
+      <text class="lbl" x="91" y="147" text-anchor="middle">Browser</text>
+      <text class="sub" x="91" y="163" text-anchor="middle">React 19 / MFE</text>
+
+      <rect class="node" x="250" y="122" width="80" height="56" rx="10" stroke="#f97316" stroke-opacity=".55"/>
+      <text class="lbl" x="290" y="147" text-anchor="middle">Edge</text>
+      <text class="sub" x="290" y="163" text-anchor="middle">Cloudflare</text>
+
+      <rect class="node" x="432" y="122" width="80" height="56" rx="10" stroke="#eab308" stroke-opacity=".5"/>
+      <text class="lbl" x="472" y="147" text-anchor="middle">ALB</text>
+      <text class="sub" x="472" y="163" text-anchor="middle">AWS</text>
+
+      <rect class="node" x="604" y="112" width="96" height="76" rx="10" stroke="#a78bfa" stroke-opacity=".7">
+        <animate attributeName="stroke-opacity" values=".35;.95;.35" dur="3.2s" repeatCount="indefinite"/>
+      </rect>
+      <text class="lbl" x="652" y="140" text-anchor="middle" fill="#e9d5ff">Gateway</text>
+      <text class="sub" x="652" y="156" text-anchor="middle">GraphQL Yoga</text>
+      <text class="sub" x="652" y="170" text-anchor="middle">Federation v2</text>
+
+      <rect class="node" x="788" y="54" width="184" height="48" rx="9" stroke="#34d399" stroke-opacity=".5"/>
+      <text class="lbl" x="880" y="74" text-anchor="middle">Subgraphs</text>
+      <text class="sub" x="880" y="90" text-anchor="middle">Bun &#183; Elysia &#183; Prisma</text>
+
+      <rect class="node" x="788" y="126" width="184" height="48" rx="9" stroke="#38bdf8" stroke-opacity=".5"/>
+      <text class="lbl" x="880" y="146" text-anchor="middle">Data</text>
+      <text class="sub" x="880" y="162" text-anchor="middle">Postgres &#183; Valkey &#183; Neptune</text>
+
+      <rect class="node" x="788" y="198" width="184" height="48" rx="9" stroke="#f472b6" stroke-opacity=".5"/>
+      <text class="lbl" x="880" y="218" text-anchor="middle">Workflows</text>
+      <text class="sub" x="880" y="234" text-anchor="middle">Temporal &#183; Redis Streams</text>
+    </g>
+
+    <text class="t cap" x="32" y="276" fill="#334155">EKS &#183; KARPENTER &#183; FLUXCD &#183; ECR &#183; OPENTOFU</text>
+    <rect width="1000" height="300" rx="18" fill="none" stroke="#38bdf8" stroke-opacity=".16" stroke-width="1.5"/>
+  </g>
+</svg>
