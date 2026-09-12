@@ -30,7 +30,10 @@ jobs:
       - name: Stats + language cards
         env:
           GH_LOGIN: ${{ github.repository_owner }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN is repo-scoped: it cannot see cross-repo PR/issue counts,
+          # so those rows are omitted rather than rendered as a false 0.
+          # Add a GH_PAT secret (a fine-grained PAT with read:user) to include them.
+          GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
         run: node scripts/gen-stats.mjs
 
       - name: Contribution snake (dark + light)

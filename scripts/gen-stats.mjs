@@ -93,14 +93,21 @@ ${inner}
 </svg>\n`
 
 // ---- stats card ----
+// PR and issue counts are only visible to a token with user scope. Under the
+// workflow's default repo-scoped GITHUB_TOKEN both come back 0 — including via
+// the search API — and publishing "Pull Requests 0" for someone with thousands
+// is worse than publishing nothing. Omit the row when it cannot be measured;
+// it reappears automatically once a GH_PAT secret (read:user) is configured.
+// Followers/stars are kept at 0 because those zeros are real, not artefacts.
 const rows = [
   ['Total Commits', fmt(commits)],
-  ['Pull Requests', fmt(prCount)],
-  ['Issues', fmt(issueCount)],
+  ...(prCount > 0 ? [['Pull Requests', fmt(prCount)]] : []),
+  ...(issueCount > 0 ? [['Issues', fmt(issueCount)]] : []),
   ['Public Repos', fmt(u.repositories.totalCount)],
   ['Stars Earned', fmt(stars)],
   ['Followers', fmt(u.followers.totalCount)],
 ]
+if (prCount === 0) console.warn('NOTE: PR/issue counts unavailable with this token; add a GH_PAT secret (read:user) to include them.')
 const statsInner = rows.map(([k, v], i) => {
   const y = 76 + i * 30
   return `  <g>
