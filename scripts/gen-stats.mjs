@@ -8,10 +8,14 @@ const LOGIN = process.env.GH_LOGIN
 const TOKEN = process.env.GH_TOKEN
 if (!LOGIN || !TOKEN) { console.error('GH_LOGIN and GH_TOKEN are required'); process.exit(1) }
 
-const QUERY = `query($login:String!){
+// PR and issue counts come from the SEARCH API, not user.pullRequests: the
+// workflow runs with secrets.GITHUB_TOKEN, which is repo-scoped, and the user
+// connections return 0 under it. Search counts public activity correctly with
+// any token. Set a GH_PAT repo secret (read:user) to include private activity.
+const QUERY = `query($login:String!, $prq:String!, $isq:String!){
   user(login:$login){
     followers{totalCount}
-    repositories(first:100, ownerAffiliations:OWNER, isFork:false){
+    repositories(first:100, ownerAffiliations:OWNER, isFork:false, privacy:PUBLIC){
       totalCount
       nodes{ stargazerCount languages(first:10, orderBy:{field:SIZE,direction:DESC}){ edges{ size node{ name color } } } }
     }
@@ -21,15 +25,19 @@ const QUERY = `query($login:String!){
       totalIssueContributions
       restrictedContributionsCount
     }
-    pullRequests{totalCount}
-    issues{totalCount}
   }
+  prs: search(query:$prq, type:ISSUE){ issueCount }
+  issues: search(query:$isq, type:ISSUE){ issueCount }
 }`
 
 const res = await fetch('https://api.github.com/graphql', {
   method: 'POST',
   headers: { authorization: `bearer ${TOKEN}`, 'content-type': 'application/json' },
-  body: JSON.stringify({ query: QUERY, variables: { login: LOGIN } }),
+  body: JSON.stringify({ query: QUERY, variables: {
+    login: LOGIN,
+    prq: `author:${LOGIN} type:pr`,
+    isq: `author:${LOGIN} type:issue`,
+  } }),
 })
 if (!res.ok) { console.error('GitHub API', res.status, await res.text()); process.exit(1) }
 const { data, errors } = await res.json()
@@ -38,6 +46,8 @@ if (errors) { console.error(JSON.stringify(errors)); process.exit(1) }
 const u = data.user
 const c = u.contributionsCollection
 const stars = u.repositories.nodes.reduce((n, r) => n + r.stargazerCount, 0)
+const prCount = Math.max(data.prs?.issueCount ?? 0, c.totalPullRequestContributions ?? 0)
+const issueCount = Math.max(data.issues?.issueCount ?? 0, c.totalIssueContributions ?? 0)
 const commits = c.totalCommitContributions + c.restrictedContributionsCount
 
 const langTotals = new Map()
@@ -85,8 +95,8 @@ ${inner}
 // ---- stats card ----
 const rows = [
   ['Total Commits', fmt(commits)],
-  ['Pull Requests', fmt(u.pullRequests.totalCount)],
-  ['Issues', fmt(u.issues.totalCount)],
+  ['Pull Requests', fmt(prCount)],
+  ['Issues', fmt(issueCount)],
   ['Public Repos', fmt(u.repositories.totalCount)],
   ['Stars Earned', fmt(stars)],
   ['Followers', fmt(u.followers.totalCount)],
@@ -121,6 +131,6 @@ const langInner = langs.map(([name, v], i) => {
 
 mkdirSync('dist', { recursive: true })
 writeFileSync('dist/stats.svg', card(400, 76 + rows.length * 30, 'GITHUB STATS', statsInner))
-writeFileSync('dist/langs.svg', card(400, 74 + langs.length * 26, 'MOST USED LANGUAGES', langInner))
-console.log(`stats: commits=${commits} prs=${u.pullRequests.totalCount} repos=${u.repositories.totalCount} stars=${stars}`)
+writeFileSync('dist/langs.svg', card(400, 74 + langs.length * 26, 'LANGUAGES \u00B7 PUBLIC REPOS', langInner))
+console.log(`stats: commits=${commits} prs=${prCount} repos=${u.repositories.totalCount} stars=${stars}`)
 console.log(`langs: ${langs.map(([n]) => n).join(', ')}`)
