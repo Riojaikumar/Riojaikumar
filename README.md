@@ -79,8 +79,8 @@ Full Stack Developer at **Burdenoff Consultancy Services**, working across the w
 ## 📊 GitHub Stats
 
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Riojaikumar&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&include_all_commits=true&bg_color=0b1020&title_color=a78bfa&icon_color=38bdf8&text_color=cbd5e1" alt="GitHub Stats" height="165"/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Riojaikumar&layout=compact&theme=tokyonight&hide_border=true&bg_color=0b1020&title_color=a78bfa&text_color=cbd5e1&langs_count=8" alt="Top Languages" height="165"/>
+  <img src="https://raw.githubusercontent.com/Riojaikumar/Riojaikumar/output/stats.svg" alt="GitHub stats" height="220"/>
+  <img src="https://raw.githubusercontent.com/Riojaikumar/Riojaikumar/output/langs.svg" alt="Most used languages" height="220"/>
 </div>
 
 <img src="./assets/divider.svg" width="100%" alt=""/>
