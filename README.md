@@ -75,8 +75,8 @@ Full Stack Developer at **Burdenoff Consultancy Services**, working across the w
 ## 📊 GitHub Stats
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Riojaikumar/Riojaikumar/output/stats.svg" alt="GitHub contribution telemetry" height="230"/>
-  <img src="https://raw.githubusercontent.com/Riojaikumar/Riojaikumar/output/langs.svg" alt="Language mix" height="230"/>
+  <img src="https://raw.githubusercontent.com/Riojaikumar/Riojaikumar/output/stats.svg" alt="GitHub contribution telemetry" height="240"/>
+  <img src="https://raw.githubusercontent.com/Riojaikumar/Riojaikumar/output/langs.svg" alt="Language mix" height="240"/>
 </div>
 
 <img src="./assets/divider.svg" width="100%" alt=""/>
