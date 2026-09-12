@@ -24,15 +24,11 @@ Full Stack Developer at **Burdenoff Consultancy Services**, working across the w
 
 <img src="./assets/divider.svg" width="100%" alt=""/>
 
-## 🏛️ How a request flows
+## 🛠️ Tech Stack
 
 <div align="center">
-  <img src="./assets/architecture.svg" alt="Request path: browser to Cloudflare to load balancer to federated GraphQL gateway to subgraphs and data tier" width="100%"/>
+  <img src="./assets/stack.svg" alt="Technologies I work with" width="100%"/>
 </div>
-
-<img src="./assets/divider.svg" width="100%" alt=""/>
-
-## 🛠️ Tech Stack
 
 **Languages**
 
